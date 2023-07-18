@@ -7,6 +7,7 @@ const Game = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.targetNumber}>{this.target}</Text>
+      <Text style={styles.footer}>Out-A-Time, 2023</Text>
     </View>
   );
 };
@@ -21,6 +22,10 @@ const styles = StyleSheet.create({
     fontSize: 40,
     backgroundColor: "#aaa",
     marginHorizontal: 50,
+    textAlign: "center",
+  },
+  footer: {
+    fontSize: 10,
     textAlign: "center",
   },
 });
