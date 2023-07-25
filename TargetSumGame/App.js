@@ -5,8 +5,16 @@ import Game from "./src/components/Game/Game.jsx";
 export default function App() {
   return (
     <>
-      <Game />
+      <Game randomNumberCount={6} />
+      <Text style={styles.footer}>Out-A-Time, 2023</Text>
       {/* <StatusBar style="auto" /> */}
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  footer: {
+    fontSize: 10,
+    textAlign: "center",
+  },
+});
