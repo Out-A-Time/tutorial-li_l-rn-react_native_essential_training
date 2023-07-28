@@ -1,20 +1,29 @@
 import { StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RandomNumber from "../RandomNumber/RandomNumber";
 
-const Game = ({ randomNumberCount, randomNumbers }) => {
+const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
   propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
+    initialTime: PropTypes.number.isRequired,
   };
 
-  const [selectedNumbers, setSelectedNumbers] = useState([]);
-  console.log("here", selectedNumbers);
+  const [selectedNumbersIDs, setSelectedNumbers] = useState([]);
+  console.log("here", selectedNumbersIDs);
 
-  // const randomNumbers = Array.from({ length: randomNumberCount }).map(
-  //   () => 1 + Math.floor(Math.random() * 10)
-  // );
+  const [timer, setTimer] = useState(initialTime);
+
+  useEffect(() => {
+    const timeoutID = setTimeout(() => {
+      setTimer(timer - 1);
+    }, 1000);
+    if (timer === 0) {
+      clearTimeout(timeoutID);
+    }
+  });
+
   const target = randomNumbers
     .slice(0, randomNumberCount - 2)
     .reduce((acc, curr) => acc + curr, 0);
@@ -23,27 +32,61 @@ const Game = ({ randomNumberCount, randomNumbers }) => {
   //Returns true/false depends is numberIndex a number inside selectedNumbers
   //indexOf() returns -1 if number not inside array.
   const isNumberSelected = (numberIndex) => {
-    return selectedNumbers.indexOf(numberIndex) >= 0;
+    return selectedNumbersIDs.indexOf(numberIndex) >= 0;
   };
 
+  //Adds clicked number to the selectedNumbers array
   const selectNumber = (numberIndex) => {
-    setSelectedNumbers([...selectedNumbers, numberIndex]);
+    setSelectedNumbers([...selectedNumbersIDs, numberIndex]);
   };
+
+  //Checks game status (playing, won, lost)
+  const gameStatus = () => {
+    const sumSelected = selectedNumbersIDs.reduce(
+      (acc, curr) => acc + randomNumbers[curr],
+      0
+    );
+    console.log(sumSelected);
+    //Displays warning on the app
+    // console.warn(sumSelected);
+    if (timer === 0) {
+      return "LOST";
+    }
+    if (sumSelected < target) {
+      return "PLAYING";
+    }
+    if (sumSelected === target) {
+      return "WON";
+    }
+    if (sumSelected > target) {
+      return "LOST";
+    }
+  };
+
+  const displayGameStatus = gameStatus();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.targetNumber}>{target}</Text>
+      <Text
+        style={[styles.targetNumber, styles[`STATUS_${displayGameStatus}`]]}
+      >
+        {target}
+      </Text>
+      <Text>Time left: {timer}</Text>
       <View style={styles.randomContainer}>
         {randomNumbers.map((randomNumber, index) => (
           <RandomNumber
             key={index}
             id={index}
             number={randomNumber}
-            isNumberDisabled={isNumberSelected(index)}
+            isNumberDisabled={
+              isNumberSelected(index) || displayGameStatus !== "PLAYING"
+            }
             onPress={selectNumber}
           />
         ))}
       </View>
+      <Text>{displayGameStatus}</Text>
     </View>
   );
 };
@@ -56,7 +99,7 @@ const styles = StyleSheet.create({
   },
   targetNumber: {
     fontSize: 50,
-    backgroundColor: "#bbb",
+
     margin: 50,
     textAlign: "center",
   },
@@ -74,9 +117,14 @@ const styles = StyleSheet.create({
     fontSize: 35,
     textAlign: "center",
   },
-  footer: {
-    fontSize: 10,
-    textAlign: "center",
+  STATUS_PLAYING: {
+    backgroundColor: "#bbb",
+  },
+  STATUS_WON: {
+    backgroundColor: "green",
+  },
+  STATUS_LOST: {
+    backgroundColor: "red",
   },
 });
 

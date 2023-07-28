@@ -9,7 +9,11 @@ export default function App() {
   );
   return (
     <>
-      <Game randomNumberCount={6} randomNumbers={randomNumbers} />
+      <Game
+        randomNumberCount={6}
+        randomNumbers={randomNumbers}
+        initialTime={15}
+      />
       <Text style={styles.footer}>Out-A-Time, 2023</Text>
       {/* <StatusBar style="auto" /> */}
     </>

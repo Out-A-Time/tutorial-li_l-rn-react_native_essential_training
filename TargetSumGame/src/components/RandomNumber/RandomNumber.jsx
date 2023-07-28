@@ -10,8 +10,10 @@ const RandomNumber = ({ number, id, isNumberDisabled, onPress }) => {
   };
 
   handlePress = () => {
-    onPress(id);
-    console.log({ number, isNumberDisabled, id });
+    if (!isNumberDisabled) {
+      onPress(id);
+      console.log({ number, isNumberDisabled, id });
+    }
   };
   return (
     <TouchableOpacity onPress={handlePress}>
