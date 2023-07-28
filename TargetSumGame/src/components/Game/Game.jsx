@@ -9,7 +9,7 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
     randomNumberCount: PropTypes.number.isRequired,
     initialTime: PropTypes.number.isRequired,
   };
-
+  console.log("GAME randomNumbers", randomNumbers);
   const [selectedNumbersIDs, setSelectedNumbers] = useState([]);
   console.log("here", selectedNumbersIDs);
 
@@ -27,7 +27,6 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
   const target = randomNumbers
     .slice(0, randomNumberCount - 2)
     .reduce((acc, curr) => acc + curr, 0);
-  //TODO: Shuffle random numbers
 
   //Returns true/false depends is numberIndex a number inside selectedNumbers
   //indexOf() returns -1 if number not inside array.
