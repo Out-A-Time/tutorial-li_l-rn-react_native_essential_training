@@ -4,29 +4,32 @@ import PropTypes from "prop-types";
 import React, { useState } from "react";
 import RandomNumber from "../RandomNumber/RandomNumber";
 
-const Game = ({ randomNumberCount }) => {
+const Game = ({ randomNumberCount, randomNumbers }) => {
   propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
   };
 
-  [selectedNumbers, setSelectedNumbers] = useState([]);
-
+  const [selectedNumbers, setSelectedNumbers] = useState([]);
   console.log("here", selectedNumbers);
-  randomNumbers = Array.from({ length: randomNumberCount }).map(
-    () => 1 + Math.floor(Math.random() * 10)
-  );
+
+  // const randomNumbers = Array.from({ length: randomNumberCount }).map(
+  //   () => 1 + Math.floor(Math.random() * 10)
+  // );
   const target = randomNumbers
     .slice(0, randomNumberCount - 2)
     .reduce((acc, curr) => acc + curr, 0);
   //TODO: Shuffle random numbers
 
-  isNumberSelected = (numberIndex) => {
+  //Returns true/false depends is numberIndex a number inside selectedNumbers
+  //indexOf() returns -1 if number not inside array.
+  const isNumberSelected = (numberIndex) => {
     return selectedNumbers.indexOf(numberIndex) >= 0;
   };
 
-  selectNumber = (numberIndex) => {
+  const selectNumber = (numberIndex) => {
     setSelectedNumbers([...selectedNumbers, numberIndex]);
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.targetNumber}>{target}</Text>
