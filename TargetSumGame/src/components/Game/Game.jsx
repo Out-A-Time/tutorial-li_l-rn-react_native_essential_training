@@ -14,6 +14,7 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
   console.log("here", selectedNumbersIDs);
 
   const [timer, setTimer] = useState(initialTime);
+  const [gameStatus, setGameStatus] = useState("PLAYING");
 
   useEffect(() => {
     const timeoutID = setTimeout(() => {
@@ -40,7 +41,7 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
   };
 
   //Checks game status (playing, won, lost)
-  const gameStatus = () => {
+  const calcGameStatus = () => {
     const sumSelected = selectedNumbersIDs.reduce(
       (acc, curr) => acc + randomNumbers[curr],
       0
@@ -62,7 +63,7 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
     }
   };
 
-  const displayGameStatus = gameStatus();
+  const displayGameStatus = calcGameStatus();
 
   return (
     <View style={styles.container}>
