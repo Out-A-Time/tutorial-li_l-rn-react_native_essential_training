@@ -1,30 +1,41 @@
 import { StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RandomNumber from "../RandomNumber/RandomNumber";
 
-const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
+const Game = ({
+  randomNumberCount,
+  randomNumbers,
+  shuffledRandomNumbers,
+  initialTime,
+}) => {
   propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
     initialTime: PropTypes.number.isRequired,
   };
-  console.log("GAME randomNumbers", randomNumbers);
-  const [selectedNumbersIDs, setSelectedNumbers] = useState([]);
-  console.log("here", selectedNumbersIDs);
 
-  const [timer, setTimer] = useState(initialTime);
-  const [gameStatus, setGameStatus] = useState("PLAYING");
+  console.log(randomNumbers, shuffledRandomNumbers);
+
+  const [selectedNumbersIDs, setSelectedNumbers] = useState([]);
+  const [remainingSeconds, setRemainingSeconds] = useState(initialTime);
+
+  let gameStatus = useRef("PLAYING");
 
   useEffect(() => {
     const timeoutID = setTimeout(() => {
-      setTimer(timer - 1);
+      setRemainingSeconds(remainingSeconds - 1);
     }, 1000);
-    if (timer === 0) {
+    if (remainingSeconds === 0) {
+      clearTimeout(timeoutID);
+    }
+
+    if (gameStatus.current !== "PLAYING") {
       clearTimeout(timeoutID);
     }
   });
 
+  //HEREEEEEE
   const target = randomNumbers
     .slice(0, randomNumberCount - 2)
     .reduce((acc, curr) => acc + curr, 0);
@@ -43,22 +54,28 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
   //Checks game status (playing, won, lost)
   const calcGameStatus = () => {
     const sumSelected = selectedNumbersIDs.reduce(
-      (acc, curr) => acc + randomNumbers[curr],
+      //HEREEEEEE
+      (acc, curr) => {
+        return acc + randomNumbers[curr];
+      },
       0
     );
     console.log(sumSelected);
     //Displays warning on the app
     // console.warn(sumSelected);
-    if (timer === 0) {
+    if (remainingSeconds === 0) {
+      gameStatus.current = "LOST";
       return "LOST";
     }
     if (sumSelected < target) {
       return "PLAYING";
     }
     if (sumSelected === target) {
+      gameStatus.current = "WON";
       return "WON";
     }
     if (sumSelected > target) {
+      gameStatus.current = "LOST";
       return "LOST";
     }
   };
@@ -72,9 +89,9 @@ const Game = ({ randomNumberCount, randomNumbers, initialTime }) => {
       >
         {target}
       </Text>
-      <Text>Time left: {timer}</Text>
+      <Text>Time left: {remainingSeconds}</Text>
       <View style={styles.randomContainer}>
-        {randomNumbers.map((randomNumber, index) => (
+        {shuffledRandomNumbers.map((randomNumber, index) => (
           <RandomNumber
             key={index}
             id={index}

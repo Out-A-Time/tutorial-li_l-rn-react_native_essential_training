@@ -10,13 +10,14 @@ export default function App() {
   );
   console.log("generateRandomNumbers", generateRandomNumbers);
 
-  const randomNumbers = shuffle(generateRandomNumbers);
-  console.log("shuffle", randomNumbers);
+  const shuffledRandomNumbers = shuffle(generateRandomNumbers);
+
   return (
     <>
       <Game
         randomNumberCount={6}
-        randomNumbers={randomNumbers}
+        randomNumbers={generateRandomNumbers}
+        shuffledRandomNumbers={shuffledRandomNumbers}
         initialTime={15}
       />
       <Text style={styles.footer}>Out-A-Time, 2023</Text>
