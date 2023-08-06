@@ -13,3 +13,7 @@ ENHANCEMENTS and OPTIMIZATIONS:
 - total time playing the game
 - total numbers of games played
 - stats like in Wordle (strike)
+
+Things to repair:
+'play again' - conditioning doesn't work
+random vs shuffled numbers doesn't work. Different array displayed than in the game.

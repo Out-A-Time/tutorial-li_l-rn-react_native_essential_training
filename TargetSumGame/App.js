@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import Game from "./src/components/Game/Game.jsx";
 import shuffle from "lodash.shuffle";
 
@@ -12,13 +13,19 @@ export default function App() {
 
   const shuffledRandomNumbers = shuffle(generateRandomNumbers);
 
+  const [gameID, setGameID] = useState(1);
+  const resetGame = () => {
+    setGameID(gameID + 1);
+  };
   return (
     <>
       <Game
+        key={gameID}
         randomNumberCount={6}
         randomNumbers={generateRandomNumbers}
         shuffledRandomNumbers={shuffledRandomNumbers}
         initialTime={15}
+        onPlayAgain={resetGame}
       />
       <Text style={styles.footer}>Out-A-Time, 2023</Text>
       {/* <StatusBar style="auto" /> */}

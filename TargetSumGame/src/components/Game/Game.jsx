@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import PropTypes from "prop-types";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -9,15 +9,17 @@ const Game = ({
   randomNumbers,
   shuffledRandomNumbers,
   initialTime,
+  onPlayAgain,
 }) => {
   propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
     initialTime: PropTypes.number.isRequired,
+    onPlayAgain: PropTypes.func.isRequired,
   };
 
   console.log(randomNumbers, shuffledRandomNumbers);
 
-  const [selectedNumbersIDs, setSelectedNumbers] = useState([]);
+  const [selectedNumbersIDs, setSelectedNumbersIDs] = useState([]);
   const [remainingSeconds, setRemainingSeconds] = useState(initialTime);
 
   let gameStatus = useRef("PLAYING");
@@ -48,7 +50,7 @@ const Game = ({
 
   //Adds clicked number to the selectedNumbers array
   const selectNumber = (numberIndex) => {
-    setSelectedNumbers([...selectedNumbersIDs, numberIndex]);
+    setSelectedNumbersIDs([...selectedNumbersIDs, numberIndex]);
   };
 
   //Checks game status (playing, won, lost)
@@ -68,6 +70,7 @@ const Game = ({
       return "LOST";
     }
     if (sumSelected < target) {
+      gameStatus.current = "PLAYING";
       return "PLAYING";
     }
     if (sumSelected === target) {
@@ -103,6 +106,12 @@ const Game = ({
           />
         ))}
       </View>
+
+      {/* //conditioning of the button below doesn't work */}
+      {gameStatus !== "PLAYING" && (
+        <Button title="Play Again!" onPress={onPlayAgain} />
+      )}
+      {/* <Button title="Play Again" onPress={onPlayAgain} /> */}
       <Text>{displayGameStatus}</Text>
     </View>
   );
