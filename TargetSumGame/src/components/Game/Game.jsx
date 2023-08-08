@@ -106,12 +106,9 @@ const Game = ({
           />
         ))}
       </View>
-
-      {/* //conditioning of the button below doesn't work */}
-      {gameStatus !== "PLAYING" && (
+      {gameStatus.current !== "PLAYING" && (
         <Button title="Play Again!" onPress={onPlayAgain} />
       )}
-      {/* <Button title="Play Again" onPress={onPlayAgain} /> */}
       <Text>{displayGameStatus}</Text>
     </View>
   );
