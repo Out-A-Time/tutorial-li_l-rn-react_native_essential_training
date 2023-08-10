@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import PropTypes from "prop-types";
+import DealItem from "./DealItem";
 
 const DealList = ({ deals }) => {
   propTypes = {
@@ -10,14 +11,23 @@ const DealList = ({ deals }) => {
   return (
     <View style={styles.list}>
       <Text>Deals: {deals.length}</Text>
+      <Text>Reading directly from data: {deals[0].cause.name}</Text>
       {/* {Why THIS DOESNT WORK???} */}
       {/* {deals.map((deal) => {
         console.log("Title: ", deal.title);
         <Text key={deal.key}>{deal.title}</Text>;
       })} */}
+
       <FlatList
         data={deals}
-        renderItem={({ item }) => <Text>{item.title}</Text>}
+        renderItem={({ item }) => (
+          <>
+            <DealItem deal={item} />
+            {/* <Text>
+              {item.title} - ${item.price}
+            </Text> */}
+          </>
+        )}
       />
     </View>
   );

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
-import DealList from "./src/components/DealList";
+import DealList from "./src/components/DealList.js";
 const API_HOST = "https://bakesaleforgood.com/api/deals";
 
 export default function App() {
