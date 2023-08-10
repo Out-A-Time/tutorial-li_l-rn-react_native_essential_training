@@ -10,7 +10,7 @@ const DealList = ({ deals }) => {
   // console.log(deals);
   return (
     <View style={styles.list}>
-      <Text>Deals: {deals.length}</Text>
+      <Text>Number of Deals: {deals.length}</Text>
       <Text>Reading directly from data: {deals[0].cause.name}</Text>
       {/* {Why THIS DOESNT WORK???} */}
       {/* {deals.map((deal) => {
