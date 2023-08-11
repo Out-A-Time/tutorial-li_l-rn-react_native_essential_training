@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import PropTypes from "prop-types";
 import DealItem from "./DealItem";
 
-const DealList = ({ deals }) => {
+const DealList = ({ deals, onItemPress }) => {
   propTypes = {
     deals: PropTypes.array.isRequired,
+    onItemPress: PropTypes.func.isRequired,
   };
   // console.log(deals);
   return (
@@ -21,12 +22,7 @@ const DealList = ({ deals }) => {
       <FlatList
         data={deals}
         renderItem={({ item }) => (
-          <>
-            <DealItem deal={item} />
-            {/* <Text>
-              {item.title} - ${item.price}
-            </Text> */}
-          </>
+          <DealItem deal={item} onPress={onItemPress} />
         )}
       />
     </View>
@@ -41,6 +37,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     width: "100%",
     paddingTop: 50,
-    alignItems: "center",
+    // alignItems: "center",
   },
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,18 +10,14 @@ import {
 import PropTypes from "prop-types";
 import { priceDisplay } from "../utilities/util";
 
-const DealItem = ({ deal, onPress }) => {
+const DealDetails = ({ initialDealData }) => {
   propTypes = {
-    deal: PropTypes.object.isRequired,
-    onPress: PropTypes.func.isRequired,
+    initialDealData: PropTypes.object.isRequired,
   };
 
-  const handlePress = () => {
-    onPress(deal.key);
-    console.log("deal.key", deal.key);
-  };
+  const [deal, setDeal] = useState(initialDealData);
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.item}>
+    <View style={styles.item}>
       <Image source={{ uri: deal.media[0] }} style={styles.image} />
       <View style={styles.info}>
         <Text style={styles.title}>{deal.title}</Text>
@@ -30,17 +26,18 @@ const DealItem = ({ deal, onPress }) => {
           <Text style={styles.price}>{priceDisplay(deal.price)}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+      <Text>....</Text>
+    </View>
   );
 };
 
-export default DealItem;
+export default DealDetails;
 
 const styles = StyleSheet.create({
   item: {
     flex: 1,
     backgroundColor: "#eee",
-    paddingTop: 10,
+    paddingTop: 40,
     marginLeft: 10,
     marginRight: 10,
     // alignItems: "center",
