@@ -5,7 +5,8 @@ import { StyleSheet, Text, View } from "react-native";
 
 import DealList from "./src/components/DealList.js";
 import DealDetails from "./src/components/DealDetails.js";
-const API_HOST = "https://bakesaleforgood.com/api/deals";
+import SearchBar from "./src/components/SearchBar.js";
+const API_HOST = "https://bakesaleforgood.com/api/deals/";
 
 export default function App() {
   const [data, setData] = useState([]);
@@ -30,15 +31,32 @@ export default function App() {
     setcurrentDealID(dealID);
   };
 
+  unsetChangeDealID = () => {
+    setcurrentDealID(null);
+  };
+
   currentDeal = () => {
     return data.find((deal) => deal.key === currentDealID);
   };
 
   if (currentDealID) {
-    return <DealDetails initialDealData={currentDeal()} />;
+    return (
+      <View style={styles.container}>
+        <DealDetails
+          initialDealData={currentDeal()}
+          onBack={unsetChangeDealID}
+        />
+      </View>
+    );
   }
   if (data.length > 0) {
-    return <DealList deals={data} onItemPress={setcurrentDealID} />;
+    return (
+      // <DealList deals={data} onItemPress={setcurrentDealID} />
+      <View style={styles.container}>
+        <SearchBar />
+        <DealList deals={data} onItemPress={setcurrentDealID} />
+      </View>
+    );
   }
 
   return (
@@ -55,7 +73,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 50,
   },
+  main: {},
   header: {
     fontSize: 40,
   },
