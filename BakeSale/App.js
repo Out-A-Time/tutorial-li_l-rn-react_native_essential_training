@@ -5,12 +5,16 @@ import { StyleSheet, Text, View } from "react-native";
 
 import DealList from "./src/components/DealList.js";
 import DealDetails from "./src/components/DealDetails.js";
-import SearchBar from "./src/components/SearchBar.js";
+import SearchBar, {
+  fetchDealsSearchResults,
+} from "./src/components/SearchBar.js";
+
 const API_HOST = "https://bakesaleforgood.com/api/deals/";
 
 export default function App() {
   const [data, setData] = useState([]);
   const [currentDealID, setcurrentDealID] = useState(null);
+  const [dealsFromSearch, setDealsFromSearch] = useState([]);
 
   const fetchInitialDeals = async () => {
     try {
@@ -35,9 +39,25 @@ export default function App() {
     setcurrentDealID(null);
   };
 
-  currentDeal = () => {
+  const currentDeal = () => {
     return data.find((deal) => deal.key === currentDealID);
   };
+
+  const searchDeals = async (searchTerm) => {
+    console.log("searchDeals called. searchTerm: ", searchTerm);
+    if (searchTerm) {
+      console.log("searchTerm is true");
+      const searchDeals = await fetchDealsSearchResults(searchTerm);
+      setDealsFromSearch(searchDeals);
+      console.log("these are dealsFromSearch: ", dealsFromSearch);
+    } else {
+      setDealsFromSearch([]);
+    }
+  };
+
+  // useEffect(() => {
+  //   searchDeals("yoga");
+  // }, []);
 
   if (currentDealID) {
     return (
@@ -49,11 +69,14 @@ export default function App() {
       </View>
     );
   }
-  if (data.length > 0) {
+
+  const dealsToDisplay = dealsFromSearch.length > 0 ? dealsFromSearch : data;
+
+  if (dealsToDisplay.length > 0) {
     return (
       // <DealList deals={data} onItemPress={setcurrentDealID} />
       <View style={styles.container}>
-        <SearchBar />
+        <SearchBar searchDealsAll={searchDeals} />
         <DealList deals={data} onItemPress={setcurrentDealID} />
       </View>
     );

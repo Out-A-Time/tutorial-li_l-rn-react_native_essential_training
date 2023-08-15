@@ -1,23 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput, StyleSheet } from "react-native";
+import PropTypes from "prop-types";
+import debounce from "lodash.debounce";
 
-const API_HOST = "https://bakesaleforgood.com/api/deals?searchTerm";
+const API_HOST = "https://bakesaleforgood.com/api/deals?searchTerm=";
 
-const SearchBar = () => {
+const SearchBar = ({ searchDealsAll }) => {
+  propTypes = {
+    searchDealsAll: PropTypes.func.isRequired,
+  };
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleChange = (searchTerm) => {
-    setSearchTerm(searchTerm);
+  const debouncedSearchDeals = debounce(searchDealsAll, 3000);
+
+  const handleChange = (searchQuery) => {
+    setSearchTerm(searchQuery);
     console.log(searchTerm);
+    // searchDealsAll(searchTerm);
+    //debounce from Lodash
+    debouncedSearchDeals(searchTerm);
   };
 
   const fetchDealsSearchResults = async (searchTerm) => {
     try {
       const response = await fetch(API_HOST + searchTerm);
-      // console.log(response);
       const dataFetched = await response.json();
-      setDealDetails(dataFetched);
-      // console.log(dataFetched);
+      console.log(dataFetched);
+      return dataFetched;
     } catch (error) {
       console.error(error);
     }
@@ -26,7 +36,7 @@ const SearchBar = () => {
   return (
     <TextInput
       placeholder="Search"
-      onChangeSearchText={handleChange}
+      onChangeText={handleChange}
       style={styles.input}
     />
   );
